@@ -1,3 +1,4 @@
+import csv
 from datetime import date
 import datetime
 import requests
@@ -17,4 +18,10 @@ for person in (data["body"]):
 
     person["age"] = today.year - birthDate.year - compareMonthAndDay
 
-print(data)
+data["body"].sort(key=lambda x: x.get('age'))
+
+with open("age.csv", "w", newline="") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    writer.writerows(data["body"])
